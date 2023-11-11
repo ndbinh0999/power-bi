@@ -17,6 +17,10 @@
     "assets": {
         "icon": "assets/icon.png"
     },
+    "devSettings": {
+        "serviceUrl": "localhost:3000"
+    },
+
     "externalJS": null,
     "style": "style/visual.less",
     "capabilities": "capabilities.json",

@@ -1,15 +1,20 @@
 {
     "dataRoles": [
         {
+            "displayName": "Category Data",
+            "name": "category",
+            "kind": "Grouping"
+        },
+        {
             "displayName": "Measure Data",
             "name": "measure",
             "kind": "Measure"
         }
     ],
-    "objects": { 
-        "circle": {
+    "objects": {
+        "dataPoint": {
             "properties": {
-               "circleColor": {
+                "defaultColor": {
                     "type": {
                         "fill": {
                             "solid": {
@@ -18,9 +23,30 @@
                         }
                     }
                 },
-                "circleThickness": {
+                "showAllDataPoints": {
                     "type": {
-                        "numeric": true
+                        "bool": true
+                    }
+                },
+                "fill": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "fillRule": {
+                    "type": {
+                        "fill": {}
+                    }
+                },
+                 "fontSize": {
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
                     }
                 }
             }
@@ -28,15 +54,24 @@
     },
     "dataViewMappings": [
         {
-            "conditions": [
-                {
-                    "measure": {
-                        "max": 1
+            "categorical": {
+                "categories": {
+                    "for": {
+                        "in": "category"
+                    },
+                    "dataReductionAlgorithm": {
+                        "top": {}
                     }
+                },
+                "values": {
+                    "select": [
+                        {
+                            "bind": {
+                                "to": "measure"
+                            }
+                        }
+                    ]
                 }
-            ],
-            "single": {
-                "role": "measure"
             }
         }
     ],
