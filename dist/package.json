@@ -1,0 +1,17 @@
+{
+		"version": "1.0.0.0",
+		"author": {"name":"binh.nguyen2","email":"binh.nguyen2@bnksolution.com"},
+		"resources": [
+			{
+				"resourceId": "rId0",
+				"sourceType": 5,
+				"file": "resources/reactCircleCardEF996609E054433F98CFFD7744F7BB9D.pbiviz.json"
+			}
+		],
+		"visual": {"name":"reactCircleCard","displayName":"React Mind Map Card","guid":"reactCircleCardEF996609E054433F98CFFD7744F7BB9D","visualClassName":"Visual","version":"1.0.0.0","description":"React Mind Map Card","supportUrl":"https://community.powerbi.com","gitHubUrl":"https://github.com/ndbinh0999/power-bi"},
+		"metadata": {
+			"pbivizjson": {
+				"resourceId": "rId0"
+			}
+		}
+	}
