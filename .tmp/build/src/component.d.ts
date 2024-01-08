@@ -9,16 +9,18 @@ interface State {
     mounthSelected?: string;
     categoryData?: CategoryAfterProcess[];
     filteredCategoryData?: CategoryAfterProcess[];
+    categorySelected?: CategoryAfterProcess;
 }
 export declare const initialState: State;
-export declare class ReactCircleCard extends React.Component<{}, State> {
+export declare class ReactVisualCard extends React.Component<{}, State> {
     private static updateCallback;
     constructor(props: any);
     componentWillMount(): void;
     componentWillUnmount(): void;
     static update(newState: State): void;
+    onClickFailureBox(id: string): void;
     renderSquareBoxes(squareCount: number, arrayBgrColor: number[]): any[];
-    renderFailureBox(title: string, squareCount: number, arrayBgrColor: number[], renderBoxBefore?: boolean): React.JSX.Element;
+    renderFailureBox(id: string, title: string, squareCount: number, arrayBgrColor: number[], renderBoxBefore?: boolean): React.JSX.Element;
     render(): React.JSX.Element;
 }
 export {};
