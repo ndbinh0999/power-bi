@@ -9,6 +9,8 @@ export declare class Visual implements IVisual {
     private viewport;
     private formattingSettings;
     private formattingSettingsService;
+    getMonthName(monthNumber: number): string;
+    getCurrentMonth(): string;
     private clear;
     constructor(options: VisualConstructorOptions);
     update(options: VisualUpdateOptions): void;

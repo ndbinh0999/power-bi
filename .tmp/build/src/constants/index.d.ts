@@ -16,7 +16,7 @@ export declare enum ColorType {
     ControlIsNotPerforming = "red",
     ControllIsDemonstrably = "#2BA84E",
     Inconsistency = "#7D53DE",
-    Insufficient = "#EDEDEF"
+    Insufficient = " #A9A9A9"
 }
 export declare enum ColorTypeEnum {
     ControlIsNotPerforming = 1,
@@ -25,3 +25,7 @@ export declare enum ColorTypeEnum {
     Insufficient = 4
 }
 export declare const getColorType: Map<ColorTypeEnum, ColorType>;
+export declare const monthsList: {
+    label: string;
+    key: string;
+}[];

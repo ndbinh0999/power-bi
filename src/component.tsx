@@ -1,8 +1,9 @@
 import * as React from "react";
 import { CategoryAfterProcess } from "./interface/category";
 import { getColorType } from "./constants/index";
-import { Row, Col, Dropdown, Input, Empty, Button, Space } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
+import { Row, Col, Dropdown, Empty, Button, Space, Typography } from "antd";
+import { monthsList } from "./constants/index";
+import CategoryDetail from "./component/category-detail";
 
 interface State {
   textLabel?: string;
@@ -13,6 +14,7 @@ interface State {
   mounthSelected?: string;
   categoryData?: CategoryAfterProcess[];
   filteredCategoryData?: CategoryAfterProcess[];
+  categorySelected?: CategoryAfterProcess;
 }
 
 export const initialState: State = {
@@ -24,7 +26,7 @@ export const initialState: State = {
   filteredCategoryData: [],
 };
 
-export class ReactCircleCard extends React.Component<{}, State> {
+export class ReactVisualCard extends React.Component<{}, State> {
   private static updateCallback: ((data: State) => void) | null = null;
 
   constructor(props: any) {
@@ -33,19 +35,27 @@ export class ReactCircleCard extends React.Component<{}, State> {
   }
 
   componentWillMount() {
-    ReactCircleCard.updateCallback = (newState: State): void => {
+    ReactVisualCard.updateCallback = (newState: State): void => {
       this.setState(newState);
     };
   }
 
   componentWillUnmount() {
-    ReactCircleCard.updateCallback = null;
+    ReactVisualCard.updateCallback = null;
   }
 
   static update(newState: State) {
-    if (typeof ReactCircleCard.updateCallback === "function") {
-      ReactCircleCard.updateCallback(newState);
+    if (typeof ReactVisualCard.updateCallback === "function") {
+      ReactVisualCard.updateCallback(newState);
     }
+  }
+
+  onClickFailureBox(id: string) {
+    this.setState({
+      categorySelected: this.state.filteredCategoryData.find((item) => {
+        return item.Id === id;
+      }),
+    });
   }
 
   renderSquareBoxes(squareCount: number, arrayBgrColor: number[]) {
@@ -65,6 +75,7 @@ export class ReactCircleCard extends React.Component<{}, State> {
   }
 
   renderFailureBox(
+    id: string,
     title: string,
     squareCount: number,
     arrayBgrColor: number[],
@@ -72,6 +83,7 @@ export class ReactCircleCard extends React.Component<{}, State> {
   ) {
     return (
       <div
+        key={id}
         style={{
           display: "flex",
           justifyContent: renderBoxBefore ? "space-between" : "",
@@ -81,7 +93,10 @@ export class ReactCircleCard extends React.Component<{}, State> {
       >
         {renderBoxBefore && this.renderSquareBoxes(squareCount, arrayBgrColor)}
         <div className="chart-divider"></div>
-        <div className="rectangle-box">
+        <div
+          className="rectangle-box"
+          onClick={() => this.onClickFailureBox(id)}
+        >
           <p className="content">{title}</p>
         </div>
         {!renderBoxBefore && this.renderSquareBoxes(squareCount, arrayBgrColor)}
@@ -90,59 +105,8 @@ export class ReactCircleCard extends React.Component<{}, State> {
   }
 
   render() {
-    const items = [
-      {
-        label: "Jan",
-        key: "Jan",
-      },
-      {
-        label: "Feb",
-        key: "Feb",
-      },
-      {
-        label: "Mar",
-        key: "Mar",
-      },
-      {
-        label: "Apr",
-        key: "Apr",
-      },
-      {
-        label: "May",
-        key: "May",
-      },
-      {
-        label: "Jun",
-        key: "Jun",
-      },
-      {
-        label: "Jul",
-        key: "Jul",
-      },
-      {
-        label: "Aug",
-        key: "Aug",
-      },
-      {
-        label: "Sep",
-        key: "Sep",
-      },
-      {
-        label: "Oct",
-        key: "Oct",
-      },
-      {
-        label: "Nov",
-        key: "Nov",
-      },
-      {
-        label: "Dec",
-        key: "Dec",
-      },
-    ];
-
     const menuProps = {
-      items,
+      monthsList,
       onClick: (e: any) => {
         this.setState({ mounthSelected: e.key });
         this.setState({
@@ -150,18 +114,19 @@ export class ReactCircleCard extends React.Component<{}, State> {
             return item.Datatime === e.key;
           }),
         });
-        console.log("filteredCategoryData", this.state.filteredCategoryData);
       },
     };
 
     const {
-      textLabel,
-      textValue,
+      // textLabel,
+      // textValue,
+      // categoryData,
       size,
       background,
       borderWidth,
-      categoryData,
     } = this.state;
+
+    const { Title } = Typography;
 
     const style: React.CSSProperties = {
       width: size,
@@ -170,8 +135,13 @@ export class ReactCircleCard extends React.Component<{}, State> {
       borderWidth,
     };
 
-    return (
-      <>
+    return this.state.categorySelected ? (
+      <CategoryDetail
+        categorySelected={this.state.categorySelected}
+        onBack={() => this.setState({ categorySelected: null })}
+      />
+    ) : (
+      <div className="wrapper-visual-chart">
         <Row justify={"end"} style={{ width: "100%", marginBottom: "20px" }}>
           <Col span={6}>
             <Dropdown menu={menuProps}>
@@ -185,8 +155,7 @@ export class ReactCircleCard extends React.Component<{}, State> {
             </Dropdown>
           </Col>
         </Row>
-        <div
-        >
+        <div>
           {this.state.filteredCategoryData[0] ? (
             <div className="chart-wrapper">
               <div>
@@ -206,13 +175,19 @@ export class ReactCircleCard extends React.Component<{}, State> {
                       >
                         {[0, 6].includes(index) && (
                           <div
-                            className={`${index === 0
+                            className={`${
+                              index === 0
                                 ? "vertical-line-top"
                                 : "vertical-line-bottom "
-                              }`}
+                            }`}
                           ></div>
                         )}
-                        {this.renderFailureBox(item.Category, 7, item.Gate)}
+                        {this.renderFailureBox(
+                          item.Id,
+                          item.Category,
+                          7,
+                          item.Gate
+                        )}
                       </div>
                     );
                   })}
@@ -248,13 +223,15 @@ export class ReactCircleCard extends React.Component<{}, State> {
                       >
                         {[0, 4].includes(index) && (
                           <div
-                            className={`${index === 0
+                            className={`${
+                              index === 0
                                 ? "vertical-line-top-1"
                                 : "vertical-line-bottom-1"
-                              }`}
+                            }`}
                           ></div>
                         )}
                         {this.renderFailureBox(
+                          item.Id,
                           item.Category,
                           7,
                           item.Gate,
@@ -269,7 +246,7 @@ export class ReactCircleCard extends React.Component<{}, State> {
             <Empty />
           )}
         </div>
-      </>
+      </div>
     );
   }
 }
